@@ -150,7 +150,7 @@ bool Modbus::parse_modbus_byte_(uint8_t byte) {
       found = true;
     }
   }
-  waiting_for_response = 0;
+  // waiting_for_response = 0;
 
   if (!found) {
     ESP_LOGW(TAG, "Got Modbus frame from unknown address 0x%02X! ", address);
