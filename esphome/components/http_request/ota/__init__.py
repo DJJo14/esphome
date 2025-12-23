@@ -1,5 +1,6 @@
 from esphome import automation
 import esphome.codegen as cg
+from esphome.components.const import CONF_REQUEST_HEADERS
 from esphome.components.ota import BASE_OTA_SCHEMA, OTAComponent, ota_to_code
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_PASSWORD, CONF_URL, CONF_USERNAME
@@ -58,6 +59,9 @@ OTA_HTTP_REQUEST_FLASH_ACTION_SCHEMA = cv.All(
                 cv.All(cv.string, cv.Length(min=32, max=32))
             ),
             cv.Optional(CONF_PASSWORD): cv.templatable(cv.string),
+            cv.Optional(CONF_REQUEST_HEADERS): cv.All(
+                cv.Schema({cv.string: cv.templatable(cv.string)})
+            ),
             cv.Optional(CONF_USERNAME): cv.templatable(cv.string),
             cv.Required(CONF_URL): cv.templatable(cv.url),
         }
@@ -93,5 +97,9 @@ async def ota_http_request_action_to_code(config, action_id, template_arg, args)
 
     template_ = await cg.templatable(config[CONF_URL], args, cg.std_string)
     cg.add(var.set_url(template_))
+
+    for key, value in config.get(CONF_REQUEST_HEADERS, {}).items():
+        template_ = await cg.templatable(value, args, cg.const_char_ptr)
+        cg.add(var.add_request_header(key, template_))
 
     return var

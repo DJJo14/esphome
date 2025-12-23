@@ -32,6 +32,9 @@ class OtaHttpRequestComponent : public ota::OTAComponent, public Parented<HttpRe
   void set_password(const std::string &password) { this->password_ = password; }
   void set_url(const std::string &url);
   void set_username(const std::string &username) { this->username_ = username; }
+  void add_request_header(const char *key, const char *value) {
+    this->request_headers_.push_back({std::string(key), std::string(value)});
+  }
 
   std::string md5_computed() { return this->md5_computed_; }
   std::string md5_expected() { return this->md5_expected_; }
@@ -51,6 +54,7 @@ class OtaHttpRequestComponent : public ota::OTAComponent, public Parented<HttpRe
   std::string password_{};
   std::string username_{};
   std::string url_{};
+  std::list<Header> request_headers_{};
   int status_ = -1;
   bool update_started_ = false;
   static const uint16_t HTTP_RECV_BUFFER = 256;  // the firmware GET chunk size
