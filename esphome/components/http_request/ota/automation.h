@@ -15,6 +15,10 @@ template<typename... Ts> class OtaHttpRequestComponentFlashAction : public Actio
   TEMPLATABLE_VALUE(std::string, url)
   TEMPLATABLE_VALUE(std::string, username)
 
+  void add_request_header(const char *key, TemplatableValue<const char *, Ts...> value) {
+    this->request_headers_.insert({key, value});
+  }
+
   void play(const Ts &...x) override {
     if (this->md5_url_.has_value()) {
       this->parent_->set_md5_url(this->md5_url_.value(x...));
@@ -28,6 +32,17 @@ template<typename... Ts> class OtaHttpRequestComponentFlashAction : public Actio
     if (this->username_.has_value()) {
       this->parent_->set_username(this->username_.value(x...));
     }
+
+    // std::list<Header> request_headers;
+    for (const auto &item : this->request_headers_) {
+      auto val = item.second;
+      Header header;
+      header.name = item.first;
+      header.value = val.value(x...);
+      // request_headers.push_back(header);
+      this->parent_->add_request_header(header.name.c_str(), header.value.c_str());
+    }
+
     this->parent_->set_url(this->url_.value(x...));
 
     this->parent_->flash();
@@ -36,6 +51,7 @@ template<typename... Ts> class OtaHttpRequestComponentFlashAction : public Actio
 
  protected:
   OtaHttpRequestComponent *parent_;
+  std::map<const char *, TemplatableValue<const char *, Ts...>> request_headers_{};
 };
 
 }  // namespace http_request
