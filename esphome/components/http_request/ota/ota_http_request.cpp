@@ -96,6 +96,10 @@ uint8_t OtaHttpRequestComponent::do_ota_() {
   }
   ESP_LOGVV(TAG, "url_with_auth: %s", url_with_auth.c_str());
   ESP_LOGI(TAG, "Connecting to: %s", this->url_.c_str());
+  ESP_LOGV(TAG, "Request headers:");
+  for (const auto &header : this->request_headers_) {
+    ESP_LOGV(TAG, "  %s: %s", header.name.c_str(), header.value.c_str());
+  }
 
   auto container = this->parent_->get(url_with_auth, this->request_headers_);
 
