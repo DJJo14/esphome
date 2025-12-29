@@ -48,7 +48,7 @@ std::shared_ptr<HttpContainer> HttpRequestArduino::perform(const std::string &ur
     ESP_LOGV(TAG, "ESP8266 HTTPS connection with WiFiClientSecure");
     stream_ptr = std::make_unique<WiFiClientSecure>();
     WiFiClientSecure *secure_client = static_cast<WiFiClientSecure *>(stream_ptr.get());
-    secure_client->setBufferSizes(1024, 1024);
+    secure_client->setBufferSizes(2048, 2048);
     secure_client->setInsecure();
   } else {
     stream_ptr = std::make_unique<WiFiClient>();
