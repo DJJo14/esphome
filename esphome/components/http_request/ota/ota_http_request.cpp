@@ -101,6 +101,7 @@ uint8_t OtaHttpRequestComponent::do_ota_() {
     ESP_LOGI(TAG, "  %s: %s", header.name.c_str(), header.value.c_str());
   }
 
+  this->parent_->set_max_response_buffer_size(2048);
   this->parent_->set_follow_redirects(true);
   this->parent_->set_redirect_limit(10);
   this->parent_->set_timeout(10000);

@@ -34,6 +34,7 @@ std::shared_ptr<HttpContainer> HttpRequestArduino::perform(const std::string &ur
   watchdog::WatchdogManager wdm(this->get_watchdog_timeout());
 
   if (this->follow_redirects_) {
+    ESP_LOGD(TAG, "Following redirects enabled, limit: %d", this->redirect_limit_);
     container->client_.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
     container->client_.setRedirectLimit(this->redirect_limit_);
   } else {
@@ -47,7 +48,7 @@ std::shared_ptr<HttpContainer> HttpRequestArduino::perform(const std::string &ur
     ESP_LOGV(TAG, "ESP8266 HTTPS connection with WiFiClientSecure");
     stream_ptr = std::make_unique<WiFiClientSecure>();
     WiFiClientSecure *secure_client = static_cast<WiFiClientSecure *>(stream_ptr.get());
-    secure_client->setBufferSizes(512, 512);
+    secure_client->setBufferSizes(1024, 1024);
     secure_client->setInsecure();
   } else {
     stream_ptr = std::make_unique<WiFiClient>();
