@@ -107,7 +107,7 @@ std::shared_ptr<HttpContainer> HttpRequestArduino::perform(const std::string &ur
   container->status_code = container->client_.sendRequest(method.c_str(), body.c_str());
   App.feed_wdt();
   if (container->status_code < 0) {
-    ESP_LOGW(TAG, "HTTP Request failed; URL: %s; Error: %s", url.c_str(),
+    ESP_LOGW(TAG, "HTTP Request failed; URL: %s (length: %d); Error: %s", url.c_str(), url.length(),
              HTTPClient::errorToString(container->status_code).c_str());
     this->status_momentary_error("failed", 1000);
     container->end();
