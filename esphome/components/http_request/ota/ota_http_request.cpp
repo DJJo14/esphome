@@ -127,7 +127,7 @@ uint8_t OtaHttpRequestComponent::do_ota_() {
   while (container->get_bytes_read() < container->content_length) {
     // read a maximum of chunk_size bytes into buf. (real read size returned)
     int bufsize = container->read(buf, OtaHttpRequestComponent::HTTP_RECV_BUFFER);
-    ESP_LOGD(TAG, "bytes_read_ = %u, body_length_ = %u, bufsize = %i", container->get_bytes_read(),
+    ESP_LOGV(TAG, "bytes_read_ = %u, body_length_ = %u, bufsize = %i", container->get_bytes_read(),
              container->content_length, bufsize);
 
     // feed watchdog and give other tasks a chance to run
