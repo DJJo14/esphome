@@ -103,6 +103,7 @@ uint8_t OtaHttpRequestComponent::do_ota_() {
 
   this->parent_->set_follow_redirects(true);
   this->parent_->set_redirect_limit(10);
+  this->parent_->set_timeout(10000);
 
   auto container = this->parent_->get(url_with_auth, this->request_headers_);
 
