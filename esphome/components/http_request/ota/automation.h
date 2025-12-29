@@ -33,13 +33,12 @@ template<typename... Ts> class OtaHttpRequestComponentFlashAction : public Actio
       this->parent_->set_username(this->username_.value(x...));
     }
 
-    // std::list<Header> request_headers;
+    this->parent_->clear_request_headers();
     for (const auto &item : this->request_headers_) {
       auto val = item.second;
       Header header;
       header.name = item.first;
       header.value = val.value(x...);
-      // request_headers.push_back(header);
       this->parent_->add_request_header(header.name.c_str(), header.value.c_str());
     }
 

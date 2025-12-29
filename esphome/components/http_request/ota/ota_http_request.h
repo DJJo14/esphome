@@ -36,6 +36,8 @@ class OtaHttpRequestComponent : public ota::OTAComponent, public Parented<HttpRe
     this->request_headers_.push_back({std::string(key), std::string(value)});
   }
 
+  void clear_request_headers() { this->request_headers_.clear(); }
+
   std::string md5_computed() { return this->md5_computed_; }
   std::string md5_expected() { return this->md5_expected_; }
 

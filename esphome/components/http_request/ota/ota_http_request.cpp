@@ -148,7 +148,7 @@ uint8_t OtaHttpRequestComponent::do_ota_() {
     if (bufsize <= OtaHttpRequestComponent::HTTP_RECV_BUFFER) {
       // add read bytes to MD5
       md5_receive.add(buf, bufsize);
-      ESP_LOGD(TAG, "%s", format_hex_pretty((uint8_t *) buf, bufsize).c_str());
+      // ESP_LOGD(TAG, "%s", format_hex_pretty((uint8_t *) buf, bufsize).c_str());
 
       // write bytes to OTA backend
       this->update_started_ = true;
